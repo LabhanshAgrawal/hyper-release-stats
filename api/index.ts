@@ -6,29 +6,27 @@ const octokit = new Octokit();
 
 // Main function export
 export default async (req: VercelRequest, res: VercelResponse) => {
+  const ts = Date.now();
   // Get releases from github
-  const releases = (await octokit.rest.repos.listReleases({
+  const assets = (await octokit.rest.repos.listReleases({
     owner: 'vercel',
     repo: 'hyper'
   })).data.map(release => {
-    const ts = Date.now();
-    return {
-      ...release,
-      ts,
-      assets: release.assets.map(asset => {
-        return {
-          ...asset,
-          ts
-        }
-      })
-    }
-  });
+    return release.assets.map(asset => {
+      const {uploader, ...data} = asset;
+      return {
+        ...data,
+        ts,
+        release: release.name
+      }
+    });
+  }).flat();
 
-  res.json(releases);
+  res.send(`<pre>${JSON.stringify(assets, null, 2)}</pre>`);
 
   // Push to db    
   const collection = await collectionPromise;
-  await collection.insertOne(releases);
+  await collection.insertMany(assets);
 
   return;
 }

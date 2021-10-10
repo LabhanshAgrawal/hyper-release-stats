@@ -1,0 +1,11 @@
+{
+  "name": "hyper-release-stats",
+  "version": "1.0.0",
+  "main": "/api/index.js",
+  "repository": "git@github.com:LabhanshAgrawal/hyper-release-stats.git",
+  "author": "Labhansh Agrawal <labhansh.agrawal@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "vercel": "^23.1.2"
+  }
+}

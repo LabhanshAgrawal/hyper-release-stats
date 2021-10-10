@@ -22,11 +22,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     });
   }).flat();
 
-  res.send(`<pre>${JSON.stringify(assets, null, 2)}</pre>`);
-
   // Push to db    
   const collection = await collectionPromise;
   await collection.insertMany(assets);
+
+  res.json(assets);
 
   return;
 }

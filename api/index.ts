@@ -21,12 +21,16 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       }
     });
   }).flat();
+  
+  console.log('assets', assets.length);
 
   // Push to db    
   const collection = await collectionPromise;
   await collection.insertMany(assets);
+  
+  console.log('pushed to db')
 
-  res.json(assets);
+  res.status(200).send('OK');
 
   return;
 }
